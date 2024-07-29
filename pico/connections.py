@@ -1,7 +1,9 @@
 from simple import MQTTClient
 import ssl
 from time import sleep
+from machine import Pin
 
+led = Pin('LED', Pin.OUT)
 
 class sslWrap:
     def __init__(self):
@@ -27,6 +29,7 @@ import network
 
 
 def connect_internet(ssid, password=None):
+    led.value(1)
     wlan = network.WLAN(network.STA_IF)
     wlan.active(True)
     if not password:
@@ -36,6 +39,7 @@ def connect_internet(ssid, password=None):
     while wlan.isconnected() == False:
        # print(wlan.status(), network.STAT_CONNECTING, network.STAT_CONNECT_FAIL, network.STAT_WRONG_PASSWORD, network.STAT_NO_AP_FOUND)
         print('Waiting for connection...')
+        led.value(0)
         sleep(1)
     ip = wlan.ifconfig()[0]
     print(f'Connected on {ip}')
